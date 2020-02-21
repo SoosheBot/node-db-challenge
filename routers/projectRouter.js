@@ -36,6 +36,26 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.get("/:id/tasks", (req,res) => {
+    const { id } = req.params;
+    Project.getProjectTask(id)
+    .then(tasks => {
+        if (tasks.length) {
+          res.status(200).json(tasks);
+        } else {
+          res.status(404).json({ error });
+        }
+      })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: "Failed to get tasks." });
+      });
+})
+
+router.post("/", validateProject, (req,res) => {
+
+}); 
+
 
 
 //CUSTOM MIDDLEWARE
