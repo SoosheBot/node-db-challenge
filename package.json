@@ -1,0 +1,26 @@
+{
+  "name": "db-challenge",
+  "version": "1.0.0",
+  "description": "Unit-4-Node-DB-Sprint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoosheBot/node-db-challenge.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "sqlite3",
+    "database-modeling",
+    "database-design"
+  ],
+  "author": "susheela bhat harkins",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SoosheBot/node-db-challenge/issues"
+  },
+  "homepage": "https://github.com/SoosheBot/node-db-challenge#readme"
+}
