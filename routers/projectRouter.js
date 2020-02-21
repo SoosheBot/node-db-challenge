@@ -22,11 +22,11 @@ router.get("/:id", (req, res) => {
   const { id } = req.params;
   Project.getProjectId(id)
     .then(project => {
-        if (project) {
-            res.status(200).json(project);
-        } else {
-            res.status(400).json({ errorMessage: "Project/ID does not exist."})
-        } 
+      if (project) {
+        res.status(200).json(project);
+      } else {
+        res.status(400).json({ errorMessage: "Project/ID does not exist." });
+      }
     })
     .catch(err => {
       console.log(err);
@@ -36,44 +36,48 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/:id/tasks", (req,res) => {
-    const { id } = req.params;
-    Project.getProjectTask(id)
+router.get("/:id/tasks", validateProjectId, (req, res) => {
+  const { id } = req.params;
+  Project.getProjectTask(id)
     .then(tasks => {
-        if (tasks.length) {
-          res.status(200).json(tasks);
-        } else {
-          res.status(404).json({ error });
-        }
-      })
+      if (tasks.length) {
+        res.status(200).json(tasks);
+      } else {
+        res.status(404).json({ error });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "Failed to get tasks." });
+    });
+});
+
+router.post("/", validateProject, (req, res) => {
+  const body = { ...req.body };
+  Project.addProject(body)
+    .then(project => {
+        res.status(201).json(project);
+    })
     .catch(err => {
         console.log(err);
-        res.status(500).json({ error: "Failed to get tasks." });
-      });
-})
-
-router.post("/", validateProject, (req,res) => {
-
-}); 
-
-
+      res.status(500).json({ message: "Failed to create new project" });
+    });
+});
 
 //CUSTOM MIDDLEWARE
 
 function validateProject(req, res, next) {
-    if (req.body) {
-      next();
-    } else if (!req.body.name) {
-      res
-        .status(400)
-        .json({ message: "Missing required information--name" });
-    } else {
-      res.status(404).json({ errorMessage: "Project may not exist" });
-    }
+  if (req.body) {
+    next();
+  } else if (!req.body.name) {
+    res.status(400).json({ message: "Missing required information--name" });
+  } else {
+    res.status(404).json({ errorMessage: "Project may not exist" });
   }
+}
 
 function validateProjectId(req, res, next) {
-  Project.get(req.params.id)
+  Project.getProjectId(req.params.id)
     .then(checkId => {
       if (checkId) {
         req.checkId = checkId;
@@ -86,6 +90,6 @@ function validateProjectId(req, res, next) {
       console.log(err);
       res.status(500).json({ errorMessage: "Could not verify ID." });
     });
-};
+}
 
 module.exports = router;

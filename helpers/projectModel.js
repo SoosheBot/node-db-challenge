@@ -21,7 +21,7 @@ function getProjectId(project_id) {
       "p.description as description",
       "p.completed as completed",
       "t.id as task id",
-      "t.description as description",
+    //   "t.description as description",
       "t.notes as notes",
       "t.completed as completed"
     )
@@ -45,7 +45,8 @@ function getProjectTask(project_id) {
 }
 
 function addProject(project) {
-  return db("projects").insert(project);
+  return db("projects")
+  .insert(project);
 }
 
 function updateProject(changes, id) {
