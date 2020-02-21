@@ -64,13 +64,37 @@ router.post("/", validateProject, (req, res) => {
     });
 });
 
+router.put("/:id", validateProject, validateProjectId, (req,res) => {
+    const body = { ...req.body};
+    const { id } = req.params;
+    Project.updateProject(id, body)
+    .then(updated => {
+        res.status(201).json(updated);
+      })
+    .catch(err => {
+        res.status(500).json({ error: "Failed to update project" });
+      });
+})
+
+router.delete("/:id", validateProjectId, (req,res) => {
+    const { id } = req.params;
+    Project.removeProject(id)
+    .then(removed => {
+        res.status(200).json(removed);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: "Could not delete project."})
+    })
+})
+
 //CUSTOM MIDDLEWARE
 
 function validateProject(req, res, next) {
   if (req.body) {
     next();
-  } else if (!req.body.name) {
-    res.status(400).json({ message: "Missing required information--name" });
+  } else if (!req.body.project_name) {
+    res.status(400).json({ message: "Missing required information--project_name" });
   } else {
     res.status(404).json({ errorMessage: "Project may not exist" });
   }
