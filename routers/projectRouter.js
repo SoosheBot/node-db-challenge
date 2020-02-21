@@ -36,7 +36,22 @@ router.get("/:id", (req, res) => {
     });
 });
 
+
+
 //CUSTOM MIDDLEWARE
+
+function validateProject(req, res, next) {
+    if (req.body) {
+      next();
+    } else if (!req.body.name) {
+      res
+        .status(400)
+        .json({ message: "Missing required information--name" });
+    } else {
+      res.status(404).json({ errorMessage: "Project may not exist" });
+    }
+  }
+
 function validateProjectId(req, res, next) {
   Project.get(req.params.id)
     .then(checkId => {

@@ -47,3 +47,16 @@ function getProjectTask(project_id) {
 function addProject(project) {
   return db("projects").insert(project);
 }
+
+function updateProject(changes, id) {
+  return db("projects", "id")
+    .where({ id })
+    .update(changes, "*")
+    .then(count => getProjectById(id));
+}
+
+function removeProject(id) {
+  return db("projects")
+    .where({ id })
+    .del();
+}
