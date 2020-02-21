@@ -16,13 +16,14 @@ router.post("/", validateTask, (req, res) => {
       });
   });
   
+  //CUSTOM MIDDLEWARE
   function validateTask(req, res, next) {
     if (req.body) {
       next();
-    } else if (!req.body.description) {
+    } else if (!req.body.description || !req.body.project_id) {
       res
         .status(400)
-        .json({ message: "Missing required information--description" });
+        .json({ message: "Missing required information--description or project_id" });
     } else {
       res.status(404).json({ errorMessage: "Task may not exist" });
     }

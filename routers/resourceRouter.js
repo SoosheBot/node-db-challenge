@@ -30,6 +30,8 @@ router.post("/", validateResource, (req, res) => {
     });
 });
 
+
+//CUSTOM MIDDLEWARE
 function validateResource(req, res, next) {
   if (req.body) {
     next();
