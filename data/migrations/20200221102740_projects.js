@@ -32,7 +32,6 @@ exports.up = function(knex) {
       tbl.text("description", 280);
     })
     .createTable("project_resources", tbl => {
-      tbl.increments();
       tbl
         .integer("project_id")
         .unsigned()
